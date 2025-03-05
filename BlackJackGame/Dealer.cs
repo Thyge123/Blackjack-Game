@@ -9,7 +9,6 @@ namespace BlackJackGame
 {
     public class Dealer : Player
     {
-    
         public Dealer() : base()
         {
         }
@@ -27,17 +26,18 @@ namespace BlackJackGame
             // Special rule: Dealer must hit on soft 17 (Ace + 6)
             while (GetHand().HandValue < 17 || (GetHand().HandValue == 17 && HasSoftSeventeen()))
             {
+                Thread.Sleep(1000);
                 Hit(deck);
-                Console.WriteLine($"Dealer hits: {GetHand().HandValue}");
+                Console.WriteLine($"\nDealer hits: {GetHand().HandValue}");
             }
 
             if (IsBust())
             {
-                Console.WriteLine("Dealer busts!");
+                Console.WriteLine("");
             }
             else
             {
-                Console.WriteLine($"Dealer stands with {GetHand().HandValue}");
+                Console.WriteLine($"\nDealer stands with {GetHand().HandValue}");
             }
         }
 
@@ -50,7 +50,6 @@ namespace BlackJackGame
             return GetHand().Cards.Any(c => c.Value == CardsValue.Ace);
         }
 
-
         // Show only the first card (face up card)
         public Card GetFaceUpCard()
         {
@@ -59,6 +58,24 @@ namespace BlackJackGame
                 return GetHand().Cards[0];
             }
             return null;
+        }
+
+        // Show all cards in the hand
+        public void ShowHand()
+        {
+            Console.WriteLine("\nDealer's hand:");
+            foreach (Card card in GetHand().Cards)
+            {
+                Console.WriteLine(card);
+            }
+            Console.WriteLine($"\nTotal: {GetHand().HandValue}");
+        }
+
+        public int GetHandRoundOne()
+        {
+            var hand = GetHand();
+            var firstCardValue = hand.Cards[0].GetCardValue();
+            return firstCardValue;
         }
     }
 }

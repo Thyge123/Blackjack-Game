@@ -8,7 +8,7 @@ namespace BlackJackGame
         private readonly Dealer Dealer = new();
         private readonly Deck Deck = new();
 
-        public Game() { }
+        private int round = 0;
 
         public void StartGame()
         {
@@ -20,8 +20,16 @@ namespace BlackJackGame
                 if (input == "q") return;
                 if (input != "m") continue;
 
+                ResetGameState();
                 PlayRound();
             }
+        }
+
+        private void ResetGameState()
+        {
+            round = 0;
+            Player.Hand.ClearHand();
+            Dealer.Hand.ClearHand();
         }
 
         private void PlayRound()
@@ -30,24 +38,35 @@ namespace BlackJackGame
             Player.DealInitialHand(Deck);
             Dealer.DealInitialHand(Deck);
 
-            // Check for initial blackjacks
-            if (Player.HasBlackjack())
-            {
-                DisplayGameState();
-                Console.WriteLine("\nPlayer has blackjack! Player wins!");
-                return;
-            }
+            DisplayGameState();
 
-            if (Dealer.HasBlackjack())
-            {
-                DisplayGameState();
-                Console.WriteLine("\nDealer has blackjack! Dealer wins!");
+            // Check for immediate blackjack
+            if (CheckInitialBlackjacks())
                 return;
-            }
 
             // Player's turn
+            if (!PlayerTurn())
+                return;
+
+            // Dealer's turn (only happens if player stands)
+            DealerTurn();
+        }
+
+        private bool CheckInitialBlackjacks()
+        {
+            if (Player.HasBlackjack())
+            {
+                Console.WriteLine("\nPlayer has blackjack! Player wins!");
+                return true;
+            }
+            return false;
+        }
+
+        private bool PlayerTurn()
+        {
             while (true)
             {
+                round++;
                 DisplayGameState();
 
                 Console.WriteLine("\nPress 'h' to hit or 's' to stand");
@@ -55,101 +74,99 @@ namespace BlackJackGame
 
                 if (input == "h")
                 {
-                    PlayerHit();
-                    if (CheckGameEndConditions()) return;
+                    Player.Hit(Deck);
+                    Console.WriteLine("\nPlayer hits!");
+
+                    if (Player.IsBust() || Player.HasBlackjack())
+                    {
+                        DisplayGameState(showAllDealerCards: true);
+                        if (EvaluateGameResult())
+                            return false;
+                    }
                 }
                 else if (input == "s")
                 {
-                    PlayerStand();
-                    return;
+                    Player.Stand();
+                    return true;
                 }
             }
         }
 
-        private void PlayerHit()
+        private void DealerTurn()
         {
-            Player.Hit(Deck);
-
-            if (Player.IsBust())
-            {
-                DisplayGameState();
-                Console.WriteLine("\nPlayer busts! Dealer wins!");
-                return;
-            }
-        }
-
-        private void PlayerStand()
-        {
-            Console.WriteLine("\nPlayer stands");
             Dealer.PlayTurn(Deck);
-
-            DisplayGameState();
-
-            if (Dealer.GetHandValue() > 21)
-            {
-                Console.WriteLine("\nDealer busts! Player wins!");
-            }
-            else if (Dealer.GetHandValue() > Player.GetHandValue())
-            {
-                Console.WriteLine("\nDealer wins!");
-            }
-            else if (Dealer.GetHandValue() == Player.GetHandValue())
-            {
-                Console.WriteLine("\nIt's a tie!");
-            }
-            else
-            {
-                Console.WriteLine("\nPlayer wins!");
-            }
+            DisplayGameState(showAllDealerCards: true);
+            EvaluateGameResult();
         }
 
-        private bool CheckGameEndConditions()
+        private bool EvaluateGameResult()
         {
             if (Player.HasBlackjack())
             {
-                DisplayGameState();
                 Console.WriteLine("\nPlayer has blackjack! Player wins!");
                 return true;
             }
-
-            if (Dealer.HasBlackjack())
+            else if (Dealer.HasBlackjack())
             {
-                DisplayGameState();
                 Console.WriteLine("\nDealer has blackjack! Dealer wins!");
                 return true;
             }
-
-            if (Player.IsBust())
+            else if (Player.IsBust())
             {
-                DisplayGameState();
                 Console.WriteLine("\nPlayer busts! Dealer wins!");
                 return true;
             }
-
-            if (Dealer.GetHandValue() > 21)
+            else if (Dealer.GetHandValue() > 21)
             {
-                DisplayGameState();
                 Console.WriteLine("\nDealer busts! Player wins!");
                 return true;
             }
+            else if (Player.DoesStand)
+            {
+                int playerValue = Player.GetHandValue();
+                int dealerValue = Dealer.GetHandValue();
 
+                if (dealerValue > playerValue)
+                {
+                    Console.WriteLine("\nDealer wins!");
+                    return true;
+                }
+                else if (dealerValue < playerValue)
+                {
+                    Console.WriteLine("\nPlayer wins!");
+                    return true;
+                }
+                else
+                {
+                    Console.WriteLine("\nIt's a tie!");
+                    return true;
+                }
+            }
             return false;
         }
 
-        private void DisplayGameState()
+        private void DisplayGameState(bool showAllDealerCards = false)
         {
             Console.WriteLine("\nPlayer's Hand:");
             Console.WriteLine($"Value: {Player.GetHandValue()}");
             Console.WriteLine($"Cards: {Player.Hand}");
 
             Console.WriteLine("\nDealer's Hand:");
-            Console.WriteLine($"Value: {Dealer.GetHandValue()}");
-            Console.WriteLine($"Cards: {Dealer.Hand}");
+            if (round == 0 && !showAllDealerCards)
+            {
+                Console.WriteLine($"Value: {Dealer.GetHandRoundOne()}");
+                Console.WriteLine($"Cards: {Dealer.GetFaceUpCard()}, [Face Down]");
+            }
+            else
+            {
+                Console.WriteLine($"Value: {Dealer.GetHandValue()}");
+                Console.WriteLine($"Cards: {Dealer.Hand}");
+            }
         }
 
         public static void DisplayMenu()
         {
-            Console.WriteLine("\nWelcome to BlackJack!");
+            Console.WriteLine("\nWelcome to BlackJack!\n");
             Console.WriteLine("Press 'm' to start the game");
             Console.WriteLine("Press 'q' to quit the game");
         }

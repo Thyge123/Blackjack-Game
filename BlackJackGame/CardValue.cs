@@ -8,7 +8,8 @@ namespace BlackJackGame
 {
     public class CardValue
     {
-        public enum CardsValue { Ace, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King }
+        public enum CardsValue
+        { Ace, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King }
 
         public CardsValue Value { get; set; }
 
@@ -19,7 +20,6 @@ namespace BlackJackGame
 
         public CardValue()
         {
-            
         }
 
         public override string ToString()

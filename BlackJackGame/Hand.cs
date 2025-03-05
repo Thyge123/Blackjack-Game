@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BlackJackGame
+﻿namespace BlackJackGame
 {
     public class Hand
     {
@@ -19,52 +13,74 @@ namespace BlackJackGame
 
         public void AddCard(Card card)
         {
-            Cards.Add(card);
-0
-            CalculateHandValue();
+            try
+            {
+                if (card == null)
+                {
+                    return; // Do not add null cards
+                }
+                Cards.Add(card);
+                CalculateHandValue();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error adding card to hand: " + e.Message);
+            }
         }
+
 
         private void CalculateHandValue()
         {
-            HandValue = 0;
-            int aceCount = 0;
-
-            // First, count aces and sum non-ace cards
-            foreach (Card card in Cards)
+            try
             {
-                if (card.Value == CardValue.CardsValue.Ace)
+                HandValue = 0;
+                int aceCount = 0;
+                // First, count aces and sum non-ace cards
+                foreach (Card card in Cards)
                 {
-                    aceCount++;
+                    if (card.Value == CardValue.CardsValue.Ace)
+                    {
+                        aceCount++;
+                    }
+                    else
+                    {
+                        HandValue += card.GetCardValue();
+                    }
                 }
-                else
+                // Add all aces as 11 initially
+                HandValue += aceCount * 11;
+                // Convert aces from 11 to 1 as needed to avoid bust
+                for (int i = 0; i < aceCount; i++)
                 {
-                    HandValue += card.GetCardValue();
+                    if (HandValue > 21)
+                    {
+                        HandValue -= 10; // Convert one ace from 11 to 1
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
             }
-
-            // Add all aces as 1 initially
-            HandValue += aceCount;
-
-            // Try to add 10 for each ace if it doesn't cause a bust
-            for (int i = 0; i < aceCount; i++)
+            catch (Exception e)
             {
-                if (HandValue + 10 <= 21)
-                {
-                    HandValue += 10;
-                }
-                else
-                {
-                    break;
-                }
+                Console.WriteLine("Error calculating hand value: " + e.Message);
             }
         }
-
 
         public void ClearHand()
         {
-            Cards.Clear();
-            HandValue = 0;
+            try
+            {
+                Cards.Clear();
+                HandValue = 0;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error clearing hand: " + e.Message);
+            }
         }
+
         public override string ToString()
         {
             string handString = "";
@@ -77,27 +93,42 @@ namespace BlackJackGame
 
         public bool IsBust()
         {
-            if (HandValue > 21)
+            try
             {
-                return true;
+                if (HandValue > 21)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
-            else
+            catch (Exception e)
             {
+                Console.WriteLine("Error checking if hand is bust: " + e.Message);
                 return false;
             }
         }
 
         public bool BlackJack()
         {
-            if (HandValue == 21)
+            try
             {
-                return true;
+                if (HandValue == 21)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
-            else
+            catch (Exception e)
             {
+                Console.WriteLine("Error checking if hand is blackjack: " + e.Message);
                 return false;
             }
         }
-        
     }
 }

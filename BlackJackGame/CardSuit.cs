@@ -25,13 +25,11 @@ namespace BlackJackGame
 
         public CardSuit()
         {
-            
         }
 
         public override string ToString()
         {
             return $"{SuitType}";
         }
-
     }
 }

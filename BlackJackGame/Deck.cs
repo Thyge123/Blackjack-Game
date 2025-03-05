@@ -8,13 +8,11 @@ namespace BlackJackGame
 {
     public class Deck
     {
-        public int DeckSize { get; set; }
         public List<Card> Cards { get; set; }
 
         public Deck()
         {
-            DeckSize = 52;
-            Cards = new List<Card>();
+            Cards = [];
 
             foreach (CardSuit.Suit suit in Enum.GetValues(typeof(CardSuit.Suit)))
             {
@@ -26,36 +24,50 @@ namespace BlackJackGame
 
             // Shuffle the deck after creation
             Shuffle();
-
-            Console.WriteLine("Deck created and shuffled.");  
         }
 
         public void Shuffle()
         {
-            Random random = new Random();
-            for (int i = 0; i < Cards.Count; i++)
+            try
             {
-                int randomIndex = random.Next(Cards.Count);
-                Card temp = Cards[i];
-                Cards[i] = Cards[randomIndex];
-                Cards[randomIndex] = temp;
+                Random random = new Random();
+                for (int i = 0; i < Cards.Count; i++)
+                {
+                    int randomIndex = random.Next(Cards.Count);
+                    Card temp = Cards[i];
+                    Cards[i] = Cards[randomIndex];
+                    Cards[randomIndex] = temp;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error shuffling deck: " + e.Message);
             }
         }
 
         public Card DrawCard()
         {
-            Card card = Cards[0];
-            Cards.RemoveAt(0);
-            if(Cards.Count == 0)
+            try
             {
-                Console.WriteLine("\nDeck is empty. Creating new deck.");
-                Deck newDeck = new Deck();
-                Cards = newDeck.Cards;
-                Shuffle();
+                Card card = Cards[0];
+                Cards.RemoveAt(0);
+                if (Cards.Count == 0)
+                {
+                    Console.WriteLine("\nDeck is empty. Creating new deck.");
+                    Deck newDeck = new Deck();
+                    Cards = newDeck.Cards;
+                    Shuffle();
+                    card = Cards[0]; // Draw the first card from the new deck
+                    Cards.RemoveAt(0);
+                }
+                return card;
             }
-            return card;
+            catch (Exception e)
+            {
+                Console.WriteLine("Error drawing card: " + e.Message);
+                return null;
+            }
         }
-
 
         public override string ToString()
         {
