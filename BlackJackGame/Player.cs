@@ -24,46 +24,26 @@ namespace BlackJackGame
 
         public Hand DealInitialHand(Deck deck)
         {
+            ArgumentNullException.ThrowIfNull(deck, nameof(deck));
+
             DoesStand = false;
-            try
-            {
-                if (deck == null)
-                {
-                    throw new NullReferenceException("Deck is null");
-                }
-                // Clear the hand before dealing
-                Hand.ClearHand();
-                // Deal two cards to start
-                Hand.AddCard(deck.DrawCard());
-                Hand.AddCard(deck.DrawCard());
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error dealing initial hand: " + e.Message);
-                throw; 
-            }
+            Hand.ClearHand();
+
+            // Deal two cards to start
+            Hand.AddCard(deck.DrawCard());
+            Hand.AddCard(deck.DrawCard());
 
             return Hand;
         }
 
-
         public void Hit(Deck deck)
         {
-            try
-            {
-                if(deck == null)
-                {
-                    throw new NullReferenceException("Deck is null");
-                }
-                Hand.AddCard(deck.DrawCard());
-                GetHandValue();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error drawing card: " + e.Message);
-                throw; 
-            }
+            ArgumentNullException.ThrowIfNull(deck, nameof(deck));
+
+            Hand.AddCard(deck.DrawCard());
+            GetHandValue();
         }
+
 
         public bool Stand()
         {
@@ -75,43 +55,19 @@ namespace BlackJackGame
         // Check if player has gone bust
         public bool IsBust()
         {
-            try
-            {
-                return Hand.IsBust();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error checking if player is bust: " + e.Message);
-                return false;
-            }
+            return Hand.IsBust();  
         }
 
         // Check if player has blackjack
         public bool HasBlackjack()
         {
-            try
-            {
-                return Hand.BlackJack();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error checking if player has blackjack: " + e.Message);
-                return false;
-            }
+            return Hand.BlackJack(); 
         }
 
         // Get the current hand value
         public int GetHandValue()
         {
-            try
-            {
-                return Hand.HandValue;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error getting hand value: " + e.Message);
-                return 0;
-            }
+            return Hand.HandValue; 
         }
     }
 }

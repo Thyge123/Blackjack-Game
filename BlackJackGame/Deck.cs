@@ -12,7 +12,7 @@ namespace BlackJackGame
 
         public Deck()
         {
-            Cards = [];
+            Cards = new List<Card>();
 
             foreach (CardSuit.Suit suit in Enum.GetValues(typeof(CardSuit.Suit)))
             {
@@ -47,26 +47,30 @@ namespace BlackJackGame
 
         public Card DrawCard()
         {
-            try
+            Card card = Cards[0];
+            Cards.RemoveAt(0);
+            if (Cards.Count == 0)
             {
-                Card card = Cards[0];
+                Console.WriteLine("\nDeck is empty. Creating new deck.");
+                CreateNewDeck();
+                card = Cards[0]; // Draw the first card from the new deck
                 Cards.RemoveAt(0);
-                if (Cards.Count == 0)
-                {
-                    Console.WriteLine("\nDeck is empty. Creating new deck.");
-                    Deck newDeck = new Deck();
-                    Cards = newDeck.Cards;
-                    Shuffle();
-                    card = Cards[0]; // Draw the first card from the new deck
-                    Cards.RemoveAt(0);
-                }
-                return card;
             }
-            catch (Exception e)
+            return card;
+        }
+
+        private void CreateNewDeck()
+        {
+            Cards = new List<Card>();
+
+            foreach (CardSuit.Suit suit in Enum.GetValues(typeof(CardSuit.Suit)))
             {
-                Console.WriteLine("Error drawing card: " + e.Message);
-                return null;
+                foreach (CardValue.CardsValue value in Enum.GetValues(typeof(CardValue.CardsValue)))
+                {
+                    Cards.Add(new Card(suit, value));
+                }
             }
+            Shuffle();
         }
 
         public override string ToString()

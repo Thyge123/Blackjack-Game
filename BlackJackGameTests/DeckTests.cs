@@ -81,54 +81,15 @@ namespace BlackJackGame.Tests
         }
 
         [TestMethod]
-        public void ToString_ReturnsExpectedFormat()
-        {
-            // Arrange
-            var deck = new Deck();
-            var firstCard = deck.Cards[0];
-
-            // Act
-            string result = deck.ToString();
-
-            // Assert
-            Assert.IsTrue(result.Contains(firstCard.ToString()));
-            Assert.IsTrue(result.StartsWith(firstCard.ToString()));
-
-            // Verify all cards are in the string
-            foreach (var card in deck.Cards)
-            {
-                Assert.IsTrue(result.Contains(card.ToString()));
-            }
-        }
-
-        // Helper method to check if all possible card combinations are in the deck
-        private bool ContainsAllPossibleCards(List<Card> cards)
-        {
-            foreach (CardSuit.Suit suit in Enum.GetValues(typeof(CardSuit.Suit)))
-            {
-                foreach (CardValue.CardsValue value in Enum.GetValues(typeof(CardValue.CardsValue)))
-                {
-                    if (!cards.Any(c => c.Suit == suit && c.Value == value))
-                    {
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
-        [TestMethod]
-        public void DrawCard_HandlesNullCards()
+        [ExpectedException(typeof(NullReferenceException))]
+        public void DrawCard_ThrowsWhenCardsIsNull()
         {
             // Arrange
             var deck = new Deck();
             deck.Cards = null;  // Force null collection to trigger exception
 
-            // Act
-            var card = deck.DrawCard();
-
-            // Assert
-            Assert.IsNull(card);
-            // The method should catch the exception and return null
+            // Act - should throw InvalidOperationException
+            deck.DrawCard();
         }
 
         [TestMethod]
@@ -173,6 +134,27 @@ namespace BlackJackGame.Tests
         }
 
         [TestMethod]
+        public void ToString_ReturnsExpectedFormat()
+        {
+            // Arrange
+            var deck = new Deck();
+            var firstCard = deck.Cards[0];
+
+            // Act
+            string result = deck.ToString();
+
+            // Assert
+            Assert.IsTrue(result.Contains(firstCard.ToString()));
+            Assert.IsTrue(result.StartsWith(firstCard.ToString()));
+
+            // Verify all cards are in the string
+            foreach (var card in deck.Cards)
+            {
+                Assert.IsTrue(result.Contains(card.ToString()));
+            }
+        }
+
+        [TestMethod]
         public void ToString_HandlesNullCards()
         {
             // Arrange
@@ -205,6 +187,22 @@ namespace BlackJackGame.Tests
 
             // Assert
             Assert.AreEqual("", result);
+        }
+
+        // Helper method to check if all possible card combinations are in the deck
+        private bool ContainsAllPossibleCards(List<Card> cards)
+        {
+            foreach (CardSuit.Suit suit in Enum.GetValues(typeof(CardSuit.Suit)))
+            {
+                foreach (CardValue.CardsValue value in Enum.GetValues(typeof(CardValue.CardsValue)))
+                {
+                    if (!cards.Any(c => c.Suit == suit && c.Value == value))
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
     }
 }

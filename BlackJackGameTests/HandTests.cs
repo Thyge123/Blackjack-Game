@@ -38,6 +38,17 @@ namespace BlackJackGame.Tests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void AddCard_ThrowsArgumentNullExceptionForNullCard()
+        {
+            // Arrange
+            Hand hand = new Hand();
+
+            // Act - This should throw ArgumentNullException
+            hand.AddCard(null);
+        }
+
+        [TestMethod]
         public void CalculateHandValue_CorrectlyCalculatesNonAceCards()
         {
             // Arrange
@@ -184,58 +195,6 @@ namespace BlackJackGame.Tests
         }
 
         [TestMethod]
-        public void AddCard_HandlesNullCardGracefully()
-        {
-            // Arrange
-            Hand hand = new Hand();
-
-            // Act
-            hand.AddCard(null);
-
-            // Assert - should not throw exception but handle it
-            Assert.AreEqual(0, hand.Cards.Count);
-            Assert.AreEqual(0, hand.HandValue);
-        }
-
-        [TestMethod]
-        public void CalculateHandValue_HandlesInvalidCardGracefully()
-        {
-            // Arrange
-            Hand hand = new Hand();
-
-            // Create a mock setup for testing exception handling
-            // This test requires access to the private CalculateHandValue method
-            // or we can test through a public method that calls it
-            hand.Cards.Add(new Card()); // Uninitialized card may cause issues
-
-            // Act - Trigger recalculation through AddCard
-            hand.AddCard(new Card(Suit.Hearts, CardValue.CardsValue.Two));
-
-            // Assert - code should handle exceptions and still function
-            Assert.AreEqual(2, hand.Cards.Count);
-            // We can't assert exact value since it depends on exception handling
-        }
-
-        [TestMethod]
-        public void ClearHand_HandlesExceptionsGracefully()
-        {
-            // Arrange
-            Hand hand = new Hand();
-            hand.AddCard(new Card(Suit.Hearts, CardValue.CardsValue.King));
-
-            // Mock a scenario that could cause exception when clearing
-            // For demonstration purposes only - this test checks that the method
-            // has proper exception handling
-
-            // Act
-            hand.ClearHand();
-
-            // Assert
-            Assert.AreEqual(0, hand.Cards.Count);
-            Assert.AreEqual(0, hand.HandValue);
-        }
-
-        [TestMethod]
         public void ToString_HandlesEmptyHand()
         {
             // Arrange
@@ -250,49 +209,17 @@ namespace BlackJackGame.Tests
         }
 
         [TestMethod]
-        public void ToString_HandlesExceptionsInCardToString()
+        public void CalculateHandValue_HandlesInvalidCardGracefully()
         {
             // Arrange
             Hand hand = new Hand();
-            // Add a card that might cause issues with ToString
-            hand.AddCard(new Card());
+            hand.Cards.Add(new Card()); // Uninitialized card
 
-            // Act
-            string result = hand.ToString();
+            // Act - Trigger recalculation through AddCard
+            hand.AddCard(new Card(Suit.Hearts, CardValue.CardsValue.Two));
 
-            // Assert
-            Assert.IsNotNull(result);
+            // Assert - We're just testing it doesn't throw exceptions
+            Assert.AreEqual(2, hand.Cards.Count);
         }
-
-        [TestMethod]
-        public void IsBust_HandlesExceptions()
-        {
-            // Arrange
-            Hand hand = new Hand();
-            // Manually set hand value to test exception path
-            hand.HandValue = -1; // Invalid value to potentially trigger exception path
-
-            // Act
-            bool result = hand.IsBust();
-
-            // Assert
-            Assert.IsFalse(result); // Default return on exception is false
-        }
-
-        [TestMethod]
-        public void BlackJack_HandlesExceptions()
-        {
-            // Arrange
-            Hand hand = new Hand();
-            // Manually set hand value to test exception path
-            hand.HandValue = -1; // Invalid value to potentially trigger exception path
-
-            // Act
-            bool result = hand.BlackJack();
-
-            // Assert
-            Assert.IsFalse(result); // Default return on exception is false
-        }
-
     }
 }
