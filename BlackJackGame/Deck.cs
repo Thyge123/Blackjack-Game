@@ -13,13 +13,13 @@ namespace BlackJackGame
         // Create a deck of cards
         public Deck()
         {
-            Cards = new List<Card>();
+            Cards = new List<Card>(); // Initialize the deck
 
-            foreach (CardSuit.Suit suit in Enum.GetValues(typeof(CardSuit.Suit)))
+            foreach (CardSuit.Suit suit in Enum.GetValues(typeof(CardSuit.Suit))) // Enumerate all card suits
             {
-                foreach (CardValue.CardsValue value in Enum.GetValues(typeof(CardValue.CardsValue)))
+                foreach (CardValue.CardsValue value in Enum.GetValues(typeof(CardValue.CardsValue))) // Enumerate all card suits and values
                 {
-                    Cards.Add(new Card(suit, value));
+                    Cards.Add(new Card(suit, value)); // Add each card to the deck
                 }
             }
 

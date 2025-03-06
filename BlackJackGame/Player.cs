@@ -13,13 +13,13 @@ namespace BlackJackGame
 
         public Player(Hand hand)
         {
-            Hand = hand;
+            Hand = hand; // Initialize the hand
             DoesStand = false;
         }
 
         public Player()
         {
-            Hand = new Hand();
+            Hand = new Hand(); // Initialize the hand
         }
 
         // Deal the initial hand

@@ -14,11 +14,19 @@
         // Add a card to the hand
         public void AddCard(Card card)
         {
-            ArgumentNullException.ThrowIfNull(card, nameof(card));
+            ArgumentNullException.ThrowIfNull(card, nameof(card)); // Check for null card
 
-            Cards.Add(card);
+            Cards.Add(card); // Add the card to the hand
             CalculateHandValue();
         }
+
+        // Clear the hand
+        public void ClearHand()
+        {
+            Cards.Clear();
+            HandValue = 0;
+        }
+
 
         // Calculate the value of the hand
         private void CalculateHandValue()
@@ -29,13 +37,13 @@
             // First, count aces and sum non-ace cards
             foreach (Card card in Cards)
             {
-                if (card.Value == CardValue.CardsValue.Ace)
+                if (card.Value == CardValue.CardsValue.Ace) // Check for ace
                 {
-                    aceCount++;
+                    aceCount++; // Count aces
                 }
                 else
                 {
-                    HandValue += card.GetCardValue();
+                    HandValue += card.GetCardValue(); // Sum non-ace cards
                 }
             }
 
@@ -49,13 +57,15 @@
             }
         }
 
-        // Clear the hand
-        public void ClearHand()
+        public bool IsBust()
         {
-            Cards.Clear();
-            HandValue = 0;
+            return HandValue > 21;
         }
 
+        public bool BlackJack()
+        {
+            return HandValue == 21;
+        }
 
         public override string ToString()
         {
@@ -65,16 +75,6 @@
                 handString += card.ToString() + ", ";
             }
             return handString;
-        }
-
-        public bool IsBust()
-        {
-            return HandValue > 21;
-        }
-
-        public bool BlackJack()
-        {
-            return HandValue == 21;
         }
     }
 }
