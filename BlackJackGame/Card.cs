@@ -23,6 +23,8 @@ namespace BlackJackGame
         {
         }
 
+
+        // Returns the value of the card.
         public int GetCardValue()
         {
             switch (Value)

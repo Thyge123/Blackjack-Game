@@ -11,6 +11,7 @@
             HandValue = 0;
         }
 
+        // Add a card to the hand
         public void AddCard(Card card)
         {
             ArgumentNullException.ThrowIfNull(card, nameof(card));
@@ -19,6 +20,7 @@
             CalculateHandValue();
         }
 
+        // Calculate the value of the hand
         private void CalculateHandValue()
         {
             HandValue = 0;
@@ -47,6 +49,7 @@
             }
         }
 
+        // Clear the hand
         public void ClearHand()
         {
             Cards.Clear();

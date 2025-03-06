@@ -19,6 +19,7 @@ namespace BlackJackGame
             return base.Hand;
         }
 
+        // Deal the initial hand
         public void PlayTurn(Deck deck)
         {
             // Dealer must hit on 16 or less, and stand on 17 or more. Must hit on soft 17 (Ace + 6)
@@ -69,6 +70,7 @@ namespace BlackJackGame
             Console.WriteLine($"\nTotal: {GetHand().HandValue}");
         }
 
+        // Get the value of the first card in the hand
         public int GetHandRoundOne()
         {
             var hand = GetHand();

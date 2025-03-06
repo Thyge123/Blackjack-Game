@@ -4,12 +4,14 @@ namespace BlackJackGame
 {
     public class Game
     {
+        // Create instances of the Player, Dealer, and Deck classes
         private readonly Player Player = new();
         private readonly Dealer Dealer = new();
         private readonly Deck Deck = new();
 
         private int round = 0;
 
+        // Start the game
         public void StartGame()
         {
             while (true)
@@ -17,14 +19,15 @@ namespace BlackJackGame
                 DisplayMenu();
                 string? input = Console.ReadLine()?.ToLower();
 
-                if (input == "q") return;
-                if (input != "m") continue;
+                if (input == "q") return; // If input is 'q', exit the game
+                if (input != "m") continue; // If input is not 'm', go back to the start of the loop
 
                 ResetGameState();
                 PlayRound();
             }
         }
 
+        // Reset the game state
         private void ResetGameState()
         {
             round = 0;
@@ -32,6 +35,7 @@ namespace BlackJackGame
             Dealer.Hand.ClearHand();
         }
 
+        // Play a round of the game
         private void PlayRound()
         {
             // Deal initial cards
@@ -52,6 +56,7 @@ namespace BlackJackGame
             DealerTurn();
         }
 
+        // Check for immediate blackjack
         private bool CheckInitialBlackjacks()
         {
             if (Player.HasBlackjack())
@@ -62,9 +67,11 @@ namespace BlackJackGame
             return false;
         }
 
+
+        // Player's turn
         private bool PlayerTurn()
         {
-            while (true)
+            while (true) // Loop until player stands or busts
             {
                 round++;
                 DisplayGameState();
@@ -77,7 +84,7 @@ namespace BlackJackGame
                     Player.Hit(Deck);
                     Console.WriteLine("\nPlayer hits!");
 
-                    if (Player.IsBust() || Player.HasBlackjack())
+                    if (Player.IsBust() || Player.HasBlackjack()) // Check if player busts or gets blackjack
                     {
                         DisplayGameState(showAllDealerCards: true);
                         if (EvaluateGameResult())
@@ -92,13 +99,15 @@ namespace BlackJackGame
             }
         }
 
+        // Dealer's turn
         private void DealerTurn()
         {
-            Dealer.PlayTurn(Deck);
-            DisplayGameState(showAllDealerCards: true);
+            Dealer.PlayTurn(Deck); // Dealer plays until hand value is 17 or higher
+            DisplayGameState(showAllDealerCards: true); // Show all dealer cards
             EvaluateGameResult();
         }
 
+        // Evaluate the game result
         private bool EvaluateGameResult()
         {
             if (Player.HasBlackjack())
@@ -145,6 +154,7 @@ namespace BlackJackGame
             return false;
         }
 
+        // Display the game state
         private void DisplayGameState(bool showAllDealerCards = false)
         {
             Console.WriteLine("\nPlayer's Hand:");

@@ -8,7 +8,7 @@ namespace BlackJackGame
 {
     public class Player
     {
-        public Hand Hand { get; protected set; }
+        public Hand Hand { get; protected set; } // Player's hand
         public bool DoesStand { get; set; }
 
         public Player(Hand hand)
@@ -22,12 +22,13 @@ namespace BlackJackGame
             Hand = new Hand();
         }
 
+        // Deal the initial hand
         public Hand DealInitialHand(Deck deck)
         {
-            ArgumentNullException.ThrowIfNull(deck, nameof(deck));
+            ArgumentNullException.ThrowIfNull(deck, nameof(deck)); // Check if deck is null
 
-            DoesStand = false;
-            Hand.ClearHand();
+            DoesStand = false; // Reset stand status  
+            Hand.ClearHand(); // Clear the hand
 
             // Deal two cards to start
             Hand.AddCard(deck.DrawCard());
@@ -36,15 +37,17 @@ namespace BlackJackGame
             return Hand;
         }
 
+        // Player's turn
         public void Hit(Deck deck)
         {
-            ArgumentNullException.ThrowIfNull(deck, nameof(deck));
+            ArgumentNullException.ThrowIfNull(deck, nameof(deck)); // Check if deck is null
 
-            Hand.AddCard(deck.DrawCard());
-            GetHandValue();
+            Hand.AddCard(deck.DrawCard()); // Draw a card
+            GetHandValue(); // Get the hand value
         }
 
 
+        // Player stands
         public bool Stand()
         {
             Console.WriteLine($"\nPlayer stands with {GetHandValue()}");
@@ -55,19 +58,19 @@ namespace BlackJackGame
         // Check if player has gone bust
         public bool IsBust()
         {
-            return Hand.IsBust();  
+            return Hand.IsBust();
         }
 
         // Check if player has blackjack
         public bool HasBlackjack()
         {
-            return Hand.BlackJack(); 
+            return Hand.BlackJack();
         }
 
         // Get the current hand value
         public int GetHandValue()
         {
-            return Hand.HandValue; 
+            return Hand.HandValue;
         }
     }
 }
