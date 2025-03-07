@@ -9,17 +9,12 @@ namespace BlackJackGame
     public class Player
     {
         public Hand Hand { get; protected set; } // Player's hand
-        public bool DoesStand { get; set; }
-
-        public Player(Hand hand)
-        {
-            Hand = hand; // Initialize the hand
-            DoesStand = false;
-        }
+        public bool DoesStand { get; set; } 
 
         public Player()
         {
             Hand = new Hand(); // Initialize the hand
+            DoesStand = false;
         }
 
         // Deal the initial hand
@@ -43,7 +38,6 @@ namespace BlackJackGame
             ArgumentNullException.ThrowIfNull(deck, nameof(deck)); // Check if deck is null
 
             Hand.AddCard(deck.DrawCard()); // Draw a card
-            GetHandValue(); // Get the hand value
         }
 
 

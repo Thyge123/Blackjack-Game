@@ -34,20 +34,6 @@ namespace BlackJackGame.Tests
         }
 
         [TestMethod]
-        public void Constructor_WithHandParameter_SetsHandProperty()
-        {
-            // Arrange
-            var hand = new Hand();
-
-            // Act
-            var player = new Player(hand);
-
-            // Assert
-            Assert.AreEqual(hand, player.Hand);
-            Assert.IsFalse(player.DoesStand);
-        }
-
-        [TestMethod]
         public void DealInitialHand_ShouldDealTwoCards()
         {
             // Arrange

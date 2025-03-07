@@ -41,9 +41,7 @@ namespace BlackJackGame
             // Deal initial cards
             Player.DealInitialHand(Deck);
             Dealer.DealInitialHand(Deck);
-
-            DisplayGameState();
-
+         
             // Check for immediate blackjack
             if (CheckInitialBlackjacks())
                 return;
@@ -78,7 +76,7 @@ namespace BlackJackGame
         {
             while (true) // Loop until player stands or busts
             {
-                round++;
+              
                 DisplayGameState();
 
                 Console.WriteLine("\nPress 'h' to hit or 's' to stand");
@@ -101,6 +99,7 @@ namespace BlackJackGame
                     Player.Stand();
                     return true;
                 }
+                round++;
             }
         }
 
