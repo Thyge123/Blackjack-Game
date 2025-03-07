@@ -14,8 +14,7 @@
         // Add a card to the hand
         public void AddCard(Card card)
         {
-            ArgumentNullException.ThrowIfNull(card, nameof(card)); // Check for null card
-
+            ArgumentNullException.ThrowIfNull(card, nameof(card)); // Check for null card         
             Cards.Add(card); // Add the card to the hand
             CalculateHandValue();
         }

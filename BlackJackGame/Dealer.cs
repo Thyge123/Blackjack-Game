@@ -30,11 +30,7 @@ namespace BlackJackGame
                 Console.WriteLine($"\nDealer hits: {GetHand().HandValue}");
             }
 
-            if (IsBust())
-            {
-                Console.WriteLine("");
-            }
-            else
+            if (DoesStand)
             {
                 Console.WriteLine($"\nDealer stands with {GetHand().HandValue}");
             }

@@ -176,7 +176,7 @@ namespace BlackJackGame.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(NullReferenceException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void DealInitialHand_WithNullDeck_ThrowsException()
         {
             // Arrange
@@ -189,7 +189,7 @@ namespace BlackJackGame.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(NullReferenceException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void Hit_WithNullDeck_ThrowsException()
         {
             // Arrange

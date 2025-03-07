@@ -64,6 +64,11 @@ namespace BlackJackGame
                 Console.WriteLine("\nPlayer has blackjack! Player wins!");
                 return true;
             }
+            if (Dealer.HasBlackjack())
+            {
+                Console.WriteLine("\nDealer has blackjack! Dealer wins!");
+                return true;
+            }
             return false;
         }
 

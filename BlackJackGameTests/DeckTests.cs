@@ -93,44 +93,27 @@ namespace BlackJackGame.Tests
         }
 
         [TestMethod]
-        public void Shuffle_HandlesNullCards()
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void Shuffle_ThrowsExceptionWhenCardsIsNull()
         {
             // Arrange
             var deck = new Deck();
             deck.Cards = null;  // Force null collection to trigger exception
 
-            // Act & Assert
-            // Method should not throw exception as it's handled internally
-            try
-            {
-                deck.Shuffle();
-                // If we get here, the exception was handled properly
-                Assert.IsTrue(true);
-            }
-            catch
-            {
-                Assert.Fail("Shuffle should handle exception internally.");
-            }
+            // Act - this should throw InvalidOperationException
+            deck.Shuffle();
         }
 
         [TestMethod]
-        public void Shuffle_HandlesEmptyCollection()
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void Shuffle_ThrowsExceptionWhenCardsIsEmpty()
         {
             // Arrange
             var deck = new Deck();
             deck.Cards = new List<Card>();  // Empty collection
 
-            // Act & Assert
-            try
-            {
-                deck.Shuffle();
-                // If we get here, the method handled the empty collection properly
-                Assert.IsTrue(true);
-            }
-            catch
-            {
-                Assert.Fail("Shuffle should handle empty collection without throwing.");
-            }
+            // Act - this should throw InvalidOperationException
+            deck.Shuffle();
         }
 
         [TestMethod]

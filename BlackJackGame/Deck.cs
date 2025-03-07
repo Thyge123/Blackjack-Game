@@ -27,38 +27,29 @@ namespace BlackJackGame
             Shuffle();
         }
 
-
-        /// <summary>
-        /// Shuffles all cards in the deck.
-        /// This method randomly reorders the cards in the deck to ensure fair gameplay.
-        /// </summary>
+        // This method randomly reorders the cards in the deck to ensure fair gameplay.
         public void Shuffle()
         {
-            try
+            if (Cards == null || Cards.Count == 0)
             {
-                // Create a new random number generator for shuffling
-                Random random = new Random();
-
-                // Iterate through each card in the deck
-                for (int i = 0; i < Cards.Count; i++)
-                {
-                    // Select a random index from all cards in the deck
-                    int randomIndex = random.Next(Cards.Count);
-
-                    // Swap the current card with the randomly selected card
-                    Card temp = Cards[i];          // Store current card temporarily
-                    Cards[i] = Cards[randomIndex]; // Replace current card with random card
-                    Cards[randomIndex] = temp;     // Place current card at random position
-                }
+                throw new InvalidOperationException("Deck is empty. Cannot shuffle.");
             }
-            catch (Exception e)
+
+            // Create a new random number generator for shuffling
+            Random random = new Random();
+
+            // Iterate through each card in the deck
+            for (int i = 0; i < Cards.Count; i++)
             {
-                // Handle any errors that might occur during shuffling
-                // This provides error resilience in case of collection modification issues
-                Console.WriteLine("Error shuffling deck: " + e.Message);
+                // Select a random index from all cards in the deck
+                int randomIndex = random.Next(Cards.Count);
+
+                // Swap the current card with the randomly selected card
+                Card temp = Cards[i];          // Store current card temporarily
+                Cards[i] = Cards[randomIndex]; // Replace current card with random card
+                Cards[randomIndex] = temp;     // Place current card at random position
             }
         }
-
 
         public Card DrawCard()
         {
